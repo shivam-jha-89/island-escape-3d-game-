@@ -1,5 +1,5 @@
 {
-  "name": "island-escape-3d",
+  "name": "island-escape-3d-game",
   "version": "1.0.0",
   "private": true,
   "description": "A 3D tropical island exploration and treasure-hunt adventure game built with Three.js and Vite.",

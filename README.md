@@ -1,4 +1,5 @@
-# 🏝️ Island Escape 3D — The Lost Treasure
+# 🏝️ island-escape-3d-game — The Lost Treasure
+ Crafted with passion by Shivam Kumar | Full-Stack & 3D Web Developer © 2026
 
 > A browser-based 3D adventure and treasure-hunt game built with Three.js and Vite, featuring island exploration, collectibles, environmental puzzles, hazards, wildlife, and a complete treasure-hunt progression system.
 
@@ -10,11 +11,12 @@
 
 ---
 
-## 🎮 Live Demo
+## 🎮 Live Demo  
 
 ### 🌐 Play the Game
+  Git clone - https://github.com/shivam-jha-89/island-escape-3d-game-
 
-**[▶️ Launch Island Escape 3D](https://island-escape-3d.vercel.app/)**
+**[▶️ Launch Island Escape 3D](https://island-escape-3d-game.vercel.app/)**
 
 Explore the island, collect the ancient artifacts, solve the puzzles, find the golden key, and unlock the legendary treasure.
 
