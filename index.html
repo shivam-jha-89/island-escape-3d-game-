@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Island Escape 3D — The Lost Treasure</title>
+  <meta name="description" content="A 3D tropical island exploration and treasure-hunt adventure game built with Three.js." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏝️</text></svg>" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Three.js canvas target -->
+    <canvas id="game-canvas"></canvas>
+
+    <!-- ============ LOADING SCREEN ============ -->
+    <div id="loading-screen" class="screen active">
+      <div class="loading-content">
+        <div class="loading-title">ISLAND ESCAPE 3D</div>
+        <div class="loading-subtitle">The Lost Treasure</div>
+        <div class="loading-bar-track">
+          <div id="loading-bar-fill" class="loading-bar-fill"></div>
+        </div>
+        <div id="loading-status" class="loading-status">Generating island…</div>
+      </div>
+    </div>
+
+    <!-- ============ MAIN MENU ============ -->
+    <div id="main-menu" class="screen">
+      <div class="menu-panel">
+        <h1 class="game-title">ISLAND ESCAPE 3D</h1>
+        <p class="game-subtitle">"THE LOST TREASURE"</p>
+        <div class="menu-buttons">
+          <button id="btn-start" class="btn btn-primary">Start Adventure</button>
+          <button id="btn-how-to-play" class="btn btn-secondary">How To Play</button>
+          <button id="btn-settings" class="btn btn-secondary">Settings</button>
+        </div>
+        <div class="menu-footer">Best Score: <span id="best-score-display">0</span></div>
+      </div>
+    </div>
+
+    <!-- ============ HOW TO PLAY ============ -->
+    <div id="how-to-play" class="screen">
+      <div class="menu-panel">
+        <h2 class="panel-title">How To Play</h2>
+        <div class="howto-grid">
+          <div class="howto-item"><span class="key">W / ↑</span> Move Forward</div>
+          <div class="howto-item"><span class="key">S / ↓</span> Move Backward</div>
+          <div class="howto-item"><span class="key">A / ←</span> Turn / Move Left</div>
+          <div class="howto-item"><span class="key">D / →</span> Turn / Move Right</div>
+          <div class="howto-item"><span class="key">Shift</span> Run</div>
+          <div class="howto-item"><span class="key">Space</span> Jump</div>
+          <div class="howto-item"><span class="key">E</span> Interact</div>
+          <div class="howto-item"><span class="key">P / Esc</span> Pause</div>
+        </div>
+        <p class="howto-text">Explore the island, collect ancient coins, find all 3 treasure map pieces,
+          uncover the golden key, solve the ruins and temple puzzles, and open the legendary treasure chest.</p>
+        <button id="btn-howto-back" class="btn btn-secondary">Back</button>
+      </div>
+    </div>
+
+    <!-- ============ SETTINGS ============ -->
+    <div id="settings-menu" class="screen">
+      <div class="menu-panel">
+        <h2 class="panel-title">Settings</h2>
+        <div class="settings-row">
+          <label for="toggle-sound">Sound Effects</label>
+          <input type="checkbox" id="toggle-sound" checked />
+        </div>
+        <div class="settings-row">
+          <label for="toggle-music">Ambient Music</label>
+          <input type="checkbox" id="toggle-music" checked />
+        </div>
+        <div class="settings-row">
+          <label for="select-quality">Graphics Quality</label>
+          <select id="select-quality">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+        <button id="btn-settings-back" class="btn btn-secondary">Back</button>
+      </div>
+    </div>
+
+    <!-- ============ HUD (in-game) ============ -->
+    <div id="hud" class="hud hidden">
+      <div class="hud-top-left">
+        <div class="hud-stat health-stat">
+          <span class="hud-icon">❤️</span>
+          <div class="health-bar-track"><div id="health-bar-fill" class="health-bar-fill"></div></div>
+        </div>
+      </div>
+      <div class="hud-top-right">
+        <div class="hud-stat"><span class="hud-icon">🪙</span><span id="coin-count">0</span></div>
+        <div class="hud-stat"><span class="hud-icon">🗺️</span><span id="map-count">0/3</span></div>
+        <div class="hud-stat"><span class="hud-icon">🔑</span><span id="key-status">✗</span></div>
+        <div class="hud-stat"><span class="hud-icon">⏱️</span><span id="hud-timer">00:00</span></div>
+      </div>
+      <div id="quest-panel" class="quest-panel">
+        <div class="quest-title">QUEST</div>
+        <ul id="quest-list" class="quest-list"></ul>
+      </div>
+      <div id="interact-prompt" class="interact-prompt hidden">PRESS <span class="key-badge">E</span> TO INTERACT</div>
+      <div id="toast-container" class="toast-container"></div>
+      <button id="btn-pause" class="icon-btn pause-btn" aria-label="Pause">II</button>
+    </div>
+
+    <!-- ============ MOBILE CONTROLS ============ -->
+    <div id="mobile-controls" class="mobile-controls hidden">
+      <div id="joystick-zone" class="joystick-zone">
+        <div id="joystick-base" class="joystick-base">
+          <div id="joystick-knob" class="joystick-knob"></div>
+        </div>
+      </div>
+      <div class="mobile-action-buttons">
+        <button id="btn-touch-interact" class="touch-btn">E</button>
+        <button id="btn-touch-jump" class="touch-btn">JUMP</button>
+        <button id="btn-touch-run" class="touch-btn touch-btn-toggle">RUN</button>
+      </div>
+    </div>
+
+    <!-- ============ PAUSE MENU ============ -->
+    <div id="pause-menu" class="screen overlay-screen">
+      <div class="menu-panel">
+        <h2 class="panel-title">Paused</h2>
+        <div class="menu-buttons">
+          <button id="btn-resume" class="btn btn-primary">Resume</button>
+          <button id="btn-restart" class="btn btn-secondary">Restart</button>
+          <button id="btn-pause-main-menu" class="btn btn-secondary">Main Menu</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ VICTORY SCREEN ============ -->
+    <div id="victory-screen" class="screen overlay-screen">
+      <div class="menu-panel victory-panel">
+        <h1 class="victory-title">TREASURE FOUND!</h1>
+        <p class="victory-subtitle">Congratulations, Explorer!</p>
+        <div class="victory-stats">
+          <div class="victory-stat">Coins Collected: <span id="victory-coins">0</span></div>
+          <div class="victory-stat">Map Pieces: <span id="victory-maps">0/3</span></div>
+          <div class="victory-stat">Time Taken: <span id="victory-time">00:00</span></div>
+          <div class="victory-stat victory-score">Final Score: <span id="victory-score">0</span></div>
+        </div>
+        <div class="menu-buttons">
+          <button id="btn-victory-restart" class="btn btn-primary">Play Again</button>
+          <button id="btn-victory-menu" class="btn btn-secondary">Main Menu</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ GAME OVER SCREEN ============ -->
+    <div id="gameover-screen" class="screen overlay-screen">
+      <div class="menu-panel">
+        <h1 class="gameover-title">GAME OVER</h1>
+        <p class="howto-text">The island got the better of you this time.</p>
+        <div class="menu-buttons">
+          <button id="btn-gameover-restart" class="btn btn-primary">Try Again</button>
+          <button id="btn-gameover-menu" class="btn btn-secondary">Main Menu</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Damage flash overlay -->
+    <div id="damage-flash" class="damage-flash"></div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
